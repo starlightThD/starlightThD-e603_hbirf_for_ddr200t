@@ -27,7 +27,6 @@ module system
   output wire [0:0]     ddr3_cs_n,
   output wire [3:0]     ddr3_dm,
   output wire [0:0]     ddr3_odt,
-  output wire           init_calib_complete,
 `endif //}
 
 `ifdef DDR4_CONTROLLER //{
@@ -44,7 +43,6 @@ module system
   output wire [0:0]  c0_ddr4_ck_t,
   output wire [0:0]  c0_ddr4_ck_c,
   output wire        c0_ddr4_reset_n,
-  output wire        init_calib_complete,
 `endif //}
 
 `ifdef TEMAC_CONTROLLER
@@ -109,11 +107,10 @@ module system
   inout wire evt_bar,
   inout wire nmi_bar,
 
-  output wire core_wfi_mode,
-  output wire core_sleep_value
- 
-  //output wire       nex_o_clk,
-  //output wire [7:0] nex_o_data  
+//  output wire core_wfi_mode,
+//  output wire core_sleep_value,
+  input   [7:0] sw_i,   // 8位开关输入
+  output  [7:0] led_o  // 8位LED输出
 );
 
   wire clk_out1;
@@ -509,7 +506,7 @@ wire dut_io_pads_qspi0_sck_o_oval;
    .ddr3_cs_n(ddr3_cs_n),
    .ddr3_dm(ddr3_dm),
    .ddr3_odt(ddr3_odt),
-   .init_calib_complete(init_calib_complete),
+   .init_calib_complete(1'b0), // --- IGNORE ---
    
    .ddr3_sys_clk_i(ddr3_sys_clk_i),
    .ddr3_sys_rst_i(fpga_rst),
@@ -530,7 +527,7 @@ wire dut_io_pads_qspi0_sck_o_oval;
   .c0_ddr4_ck_t        (c0_ddr4_ck_t       ),
   .c0_ddr4_ck_c        (c0_ddr4_ck_c       ),
   .c0_ddr4_reset_n     (c0_ddr4_reset_n    ),
-  .init_calib_complete (init_calib_complete),
+  .init_calib_complete (1'b0), // --- IGNORE ---
   .c0_ddr4_clk_p       (ddr3_sys_clk_i      ),
   .c0_ddr4_clk_n       (~ddr3_sys_clk_i     ),
   .ddr3_sys_rst_i      (fpga_rst            ),
@@ -544,9 +541,11 @@ wire dut_io_pads_qspi0_sck_o_oval;
       
     .evt_i    (evt_i),
     .nmi_i    (nmi_i),
-    .core_sleep_value(core_sleep_value),
-    .core_wfi_mode   (core_wfi_mode),
+    .core_sleep_value(1'b0), // --- IGNORE ---
+    .core_wfi_mode   (1'b0), // --- IGNORE ---
 
+	.led_o(led_o),
+	.sw_i(sw_i),
     .nex_clk (clk_16M),
     .nex_rst_n(mcu_rst),
     .nex_o_clk       (),

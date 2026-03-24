@@ -18,6 +18,8 @@ module e603_subsys_top
   input  nmi_i,
   output core_wfi_mode,
   output core_sleep_value,
+    input   [7:0] sw_i,   // 8位开关输入
+  output  [7:0] led_o,  // 8位LED输出
   input stop_on_reset,
   `ifdef DDR3_CONTROLLER
   inout  [31:0] ddr3_dq,
@@ -231,7 +233,7 @@ module e603_subsys_top
   output jtag_TMS_out,
   output jtag_DRV_TMS,
   output jtag_BK_TMS,
-  input   test_mode 
+  input   test_mode
   );
   wire sysrstreq;
   wire sysrstreq_r;
@@ -484,6 +486,8 @@ e603_gnrl_dffr #(1) mtime_toggle_dffr (mtime_toggle_nxt, mtime_toggle_a, aon_clk
     .ddr4_sys_clk_i                 (ddr4_sys_clk_i      ),
     .ddr4_sys_rst_i                 (ddr4_sys_rst_i     ),
     `endif
+    .sw_i            (sw_i),          // 8位开关输入
+    .led_o           (led_o),         // 8位LED输出
     .mtime_toggle_a  (mtime_toggle_a),
     .test_mode       (test_mode)
   );

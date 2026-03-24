@@ -288,6 +288,8 @@ module e603_subsys_perips(
   output sdio_irq,
   output  misc_irq0,
   output  misc_irq1,
+  input   [7:0] sw_i,   // 8位开关输入
+  output  [7:0] led_o,  // 8位LED输出
   input  clk,
   input  bus_rst_n,
   input  rst_n
@@ -544,12 +546,21 @@ module e603_subsys_perips(
   wire [32-1:0]            qspi0_icb_rsp_rdata;
   wire                     qspi2_icb_cmd_valid;
   wire                     qspi2_icb_cmd_ready;
-  wire [32-1:0]            qspi2_icb_cmd_addr; 
-  wire                     qspi2_icb_cmd_read; 
+  wire [32-1:0]            qspi2_icb_cmd_addr;
+  wire                     qspi2_icb_cmd_read;
   wire [32-1:0]            qspi2_icb_cmd_wdata;
   wire                     qspi2_icb_rsp_valid;
   wire                     qspi2_icb_rsp_ready;
   wire [32-1:0]            qspi2_icb_rsp_rdata;
+  // GPIO O2端口ICB信号
+  wire                     gpio_o2_icb_cmd_valid;
+  wire                     gpio_o2_icb_cmd_ready;
+  wire [32-1:0]            gpio_o2_icb_cmd_addr;
+  wire                     gpio_o2_icb_cmd_read;
+  wire [32-1:0]            gpio_o2_icb_cmd_wdata;
+  wire                     gpio_o2_icb_rsp_valid;
+  wire                     gpio_o2_icb_rsp_ready;
+  wire [32-1:0]            gpio_o2_icb_rsp_rdata;
   wire            udma_reg_icb_cmd_valid             ;
   wire            udma_reg_icb_cmd_ready             ;
   wire            udma_reg_icb_cmd_read              ;
@@ -765,12 +776,12 @@ module e603_subsys_perips(
     .o1_icb_rsp_err    (1'b0  ),
     .o1_icb_rsp_excl_ok(1'b0  ),
     .o1_icb_rsp_rdata  (32'b0),
-    .o2_icb_enable     (1'b0),
-    .o2_icb_cmd_valid  (),
-    .o2_icb_cmd_ready  (1'b0),
-    .o2_icb_cmd_addr   (),
-    .o2_icb_cmd_read   (),
-    .o2_icb_cmd_wdata  (),
+    .o2_icb_enable     (1'b1),
+    .o2_icb_cmd_valid  (gpio_o2_icb_cmd_valid),
+    .o2_icb_cmd_ready  (gpio_o2_icb_cmd_ready),
+    .o2_icb_cmd_addr   (gpio_o2_icb_cmd_addr),
+    .o2_icb_cmd_read   (gpio_o2_icb_cmd_read),
+    .o2_icb_cmd_wdata  (gpio_o2_icb_cmd_wdata),
     .o2_icb_cmd_wmask  (),
     .o2_icb_cmd_lock   (),
     .o2_icb_cmd_excl   (),
@@ -781,11 +792,11 @@ module e603_subsys_perips(
     .o2_icb_cmd_modes  (),
     .o2_icb_cmd_attri  (),
     .o2_icb_cmd_beat   (),
-    .o2_icb_rsp_valid  (1'b0),
-    .o2_icb_rsp_ready  (),
+    .o2_icb_rsp_valid  (gpio_o2_icb_rsp_valid),
+    .o2_icb_rsp_ready  (gpio_o2_icb_rsp_ready),
     .o2_icb_rsp_err    (1'b0),
     .o2_icb_rsp_excl_ok(1'b0),
-    .o2_icb_rsp_rdata  (32'b0),
+    .o2_icb_rsp_rdata  (gpio_o2_icb_rsp_rdata),
     .o3_icb_enable     (1'b1),
     .o3_icb_cmd_valid  (misc_icb_cmd_valid),
     .o3_icb_cmd_ready  (misc_icb_cmd_ready),
@@ -1117,6 +1128,21 @@ e603_subsys_misc u_subsys_misc(
     .clk           (clk  ),
     .rst_n         (rst_n) 
 );
+  // GPIO模块实例化 (O2端口: 0x10010000)
+  simple_gpio u_simple_gpio (
+    .clk           (clk),
+    .rst_n         (rst_n),
+    .i_icb_cmd_valid (gpio_o2_icb_cmd_valid),
+    .i_icb_cmd_ready (gpio_o2_icb_cmd_ready),
+    .i_icb_cmd_addr  (gpio_o2_icb_cmd_addr[31:0]),
+    .i_icb_cmd_read  (gpio_o2_icb_cmd_read),
+    .i_icb_cmd_wdata (gpio_o2_icb_cmd_wdata),
+    .i_icb_rsp_valid (gpio_o2_icb_rsp_valid),
+    .i_icb_rsp_ready (gpio_o2_icb_rsp_ready),
+    .i_icb_rsp_rdata (gpio_o2_icb_rsp_rdata),
+    .sw_i           (sw_i),      // 8位开关输入
+    .led_o          (led_o)      // 8位LED输出
+  );
     assign udma_w_icb_cmd_addr[63:32] = 32'b0;
     assign udma_r_icb_cmd_addr[63:32] = 32'b0;
 nuclei_udma_top u_udma (

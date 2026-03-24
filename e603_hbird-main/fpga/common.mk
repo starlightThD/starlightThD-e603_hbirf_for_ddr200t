@@ -78,11 +78,11 @@ endif
 # Build .mcs
 .PHONY: mcs
 mcs: install
-	time (RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) mcs)
+	time env RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) mcs
 	echo "mcsfile: $(INSTALL_DIR)/obj/$(MCSFILE_NAME)"
 
 only_mcs:
-	time (RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) only_mcs)
+	time env RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) only_mcs
 
 
 rgs_mcs: $(RGS_MCS_CFG_LIST)

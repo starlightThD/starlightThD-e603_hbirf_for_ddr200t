@@ -84,21 +84,21 @@
 // 设备文件相关配置，开启后可以使用设备文件系统提供的驱动和功能
 // 注释后uart0将使用内核提供的裸机驱动，无法使用设备文件系统
 // 预计占用24208字节内存
-//#define RT_USING_DEVICE
-//#define RT_USING_DFS
-//#define RT_USING_DFS_V1
-//#define RT_USING_MEMHEAP
-//#define RT_USING_DFS_RAMFS
-//#define DFS_USING_POSIX
-//#define DFS_USING_WORKDIR
-//#define DFS_FD_MAX 16
-//#define DFS_FILESYSTEMS_MAX 4
-//#define DFS_FILESYSTEM_TYPES_MAX 4
-//#define RT_USING_DFS_DEVFS
-//#define RT_USING_DEVICE_IPC
-//#define RT_UNAMED_PIPE_NUMBER 64
-//#define RT_USING_SERIAL
-//#define RT_USING_SERIAL_V1
+#define RT_USING_DEVICE
+#define RT_USING_DFS
+#define RT_USING_DFS_V1
+#define RT_USING_MEMHEAP
+#define RT_USING_DFS_RAMFS
+#define DFS_USING_POSIX
+#define DFS_USING_WORKDIR
+#define DFS_FD_MAX 16
+#define DFS_FILESYSTEMS_MAX 4
+#define DFS_FILESYSTEM_TYPES_MAX 4
+#define RT_USING_DFS_DEVFS
+#define RT_USING_DEVICE_IPC
+#define RT_UNAMED_PIPE_NUMBER 64
+#define RT_USING_SERIAL
+#define RT_USING_SERIAL_V1
 
 // 备用uart0输出驱动，当没有启用设备模块时进行串口输出，启用设备模块后uart0使用设备文件系统提供的驱动
 #define BSP_USING_UART_CONSOLE

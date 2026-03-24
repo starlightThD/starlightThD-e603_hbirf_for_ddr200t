@@ -84,6 +84,8 @@ module soc_top #(
   input  nmi_i,
   output core_wfi_mode,
   output core_sleep_value,
+  input   [7:0] sw_i,   // 8位开关输入
+  output  [7:0] led_o,  // 8位LED输出
   input stop_on_reset,
   input   io_pads_jtag_TCK_i_ival,
   input   io_pads_jtag_TMS_i_ival,
@@ -441,6 +443,8 @@ module soc_top #(
   .evt_i               (evt_i),
   .nmi_i               (nmi_i),
   .core_sleep_value    (core_sleep_value),
-  .core_wfi_mode       (core_wfi_mode) 
+  .core_wfi_mode       (core_wfi_mode),
+  .sw_i                 (sw_i),
+  .led_o                (led_o)
   );
 endmodule

@@ -64,6 +64,8 @@ module e603_subsys_main
   input  nmi_i,
   output core_wfi_mode,
   output core_sleep_value,
+input   [7:0] sw_i,   // 8位开关输入
+  output  [7:0] led_o,  // 8位LED输出
   input stop_on_reset,
   input  jtag_tck,
   input  jtag_tms,
@@ -235,7 +237,7 @@ module e603_subsys_main
   output             mdio_o_oval                   ,
   output             mdio_o_oe                     ,
   output             mdc_o_oval                    ,
-  input  test_mode 
+  input  test_mode
 );
   wire              ethernet_irq;
   wire  [  11:   0] eth_cfg_apb_paddr                ;
@@ -1556,9 +1558,11 @@ e603_subsys_bus_fab u_bus_fab(
     .misc_irq1           (misc_irq1),
     .udma_irq             (udma_irq),
     .sdio_irq             (sdio_irq),
+    .sw_i                (sw_i),          // 8位开关输入
+    .led_o               (led_o),         // 8位LED输出
     .clk                    (clk_bus  ),
-    .bus_rst_n              (sys_rst_n), 
-    .rst_n                  (sys_rst_n) 
+    .bus_rst_n              (sys_rst_n),
+    .rst_n                  (sys_rst_n)
   );
 e603_subsys_nice_core  u_subsys_nice_core(
     .nice_rst_n           (sys_rst_n          ),
