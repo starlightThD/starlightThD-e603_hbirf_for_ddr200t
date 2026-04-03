@@ -1,5 +1,5 @@
 下载e603_hbird文件夹和windows_toolchain.zip，解压对应的文件后修改toolchain文件夹名，将其放在没有中文的路径中，注意检查项目结构，保证e603_hbird-main和toolchain在同一个路径下，项目路径结构如下
-如果自行在官网下载工具链，请保证文件夹名称和结构正确，windows要求cmder为完整版，之后找到文件`toolchain/gcc/riscv64-unknown-elf/include/time.h`，在`clock_t   clock (void);`之前添加数据类型定义`typedef unsigned long clock_t`以解决冲突问题。
+如果自行在官网下载工具链，请到官网`https://www.nucleisys.com/download.php`下载`Nuclei RISC-V Embedded Toolchain(Baremetal/RTOS + Newlibc)`,`Nuclei OpenOCD`,`Windows Build Tools`以及在`https://mirrors.tuna.tsinghua.edu.cn/github-release/cmderdev/cmder/v1.3.25/`下载`cmder.zip`，之后解压并按如下放置项目，请保证文件夹名称和结构正确，之后找到文件`toolchain/gcc/riscv64-unknown-elf/include/time.h`，在`clock_t   clock (void);`之前添加数据类型定义`typedef unsigned long clock_t`以解决冲突问题。
 
 ```
 .
