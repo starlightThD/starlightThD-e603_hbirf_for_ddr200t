@@ -1,6 +1,6 @@
 下载e603_hbird文件夹和linux_toolchain.tar.gz，解压对应的文件后按照如下路径修改toolchain
 文件夹名，注意检查项目结构，保证e603_hbird-main和toolchain在同一个路径下，项目路径结构如下
-
+如果自行在官网下载工具链，请保证文件夹名称和结构正确，之后找到文件`toolchain/gcc/riscv64-unknown-elf/include/time.h`，在`clock_t   clock (void);`之前添加数据类型定义`typedef unsigned long clock_t`以解决冲突问题。
 ```
 .
 ├── e603_hbird-main
@@ -12,7 +12,7 @@
 │   ├── README.md
 │   └── syn
 ├── README.md
-└── toolchain
+└── toolchain (注意如下文件加命名必须完全一致)
     ├── gcc
     └── openocd
 ```
@@ -46,7 +46,7 @@ linux通过命令`lsusb`搜索是否有端口接入，并使用`ls /dev/ttyUSB*`
 3. 调试: `make clean SOC=evalsoc CORE=ux600fd BOARD=nuclei_fpga_eval DOWNLOAD=ilm debug`
 
 ## 上传
-通过调试器上传到MCU的flash中，之后使用串口工具，找到对应的USB口，设置波特率为115200，接收串口信息。上传成功则开发板上的LED0会亮起（除非进入gdb或者uart阻塞），串口端至少会输出
+通过调试器上传到MCU的flash中，之后使用串口工具，找到对应的USB口，设置波特率为115200，接收串口信息。串口端至少会输出
 ```
 Nuclei SDK Build Time: Mar  4 2026, 17:27:00 
 Download Mode: FLASH CPU Frequency 50000035 Hz 
